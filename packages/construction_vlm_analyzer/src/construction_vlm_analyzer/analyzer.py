@@ -14,6 +14,21 @@ from construction_vlm_analyzer.prompts import parse_vlm_response
 _openai_client = None
 
 
+def _openai_client_kwargs(api_key: str) -> dict:
+    """Build OpenAI() kwargs, adding a custom-gateway base_url when configured."""
+    kwargs = {"api_key": api_key}
+    if os.getenv("OPENAI_PROVIDER", "").strip().lower() == "custom":
+        base_url = os.getenv("OPENAI_BASE_URL")
+        if base_url:
+            kwargs["base_url"] = base_url
+    return kwargs
+
+
+def _openai_model() -> str:
+    """Model name for OpenAI-compatible calls (defaults to gpt-4o)."""
+    return os.getenv("OPENAI_MODEL", "gpt-4o")
+
+
 def get_openai_client():
     global _openai_client
     if _openai_client is None:
@@ -22,7 +37,7 @@ def get_openai_client():
             api_key = os.getenv("OPENAI_API_KEY")
             if not api_key:
                 raise RuntimeError("OPENAI_API_KEY not set in environment or .env")
-            _openai_client = OpenAI(api_key=api_key)
+            _openai_client = OpenAI(**_openai_client_kwargs(api_key))
         except ImportError:
             raise RuntimeError(
                 "openai package not installed. Run: pip install openai>=1.30.0"
@@ -76,10 +91,11 @@ def analyze_drawing(
     if system_prompt is None:
         raise ValueError("system_prompt is required — pass it from backend/prompts.py")
 
-    print(f"[vlm_analyzer] Calling GPT-4o Vision (size={img_resized.size}, detail={detail}, fmt={image_format})")
+    model = _openai_model()
+    print(f"[vlm_analyzer] Calling Vision model '{model}' (size={img_resized.size}, detail={detail}, fmt={image_format})")
 
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model=model,
         messages=[
             {"role": "system", "content": system_prompt},
             {

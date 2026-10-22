@@ -148,17 +148,31 @@ The `data/` folder is not included in the repo because the files are large. To s
 
 ### 5. API Keys
 
-Create a `.env` file in the `backend/` folder with your API keys:
+Create a `.env` file in the **project root** with your API keys:
 
 ```ini
 OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o
 GOOGLE_CSE_API_KEY=your_google_custom_search_api_key_here
 GOOGLE_CSE_CX=your_google_custom_search_engine_id_here
 ```
 
 You'll need:
-- An **OpenAI API key** from [platform.openai.com](https://platform.openai.com) — used for GPT-4o text explanations and Vision analysis
+- An **OpenAI API key** from [platform.openai.com](https://platform.openai.com) — used for text explanations and Vision analysis
 - A **Google Custom Search API key + Search Engine ID** from [Google Cloud Console](https://console.cloud.google.com) — used for image search
+
+By default the app calls OpenAI directly. To route all OpenAI calls through a
+custom OpenAI-compatible gateway, add:
+
+```ini
+OPENAI_PROVIDER=custom
+OPENAI_BASE_URL=https://your-gateway.example.com/v1
+OPENAI_MODEL=your-model-name
+```
+
+`OPENAI_MODEL` is used for the term explainer, Vision analysis, and the agent
+chat (defaults to `gpt-4o`). `OPENAI_BASE_URL` is passed through verbatim and is
+only applied when `OPENAI_PROVIDER=custom`.
 
 Optionally, you can also add a Groq key as a fallback for text explanations:
 ```ini

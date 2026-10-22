@@ -15,6 +15,15 @@ _groq_client = None
 _groq_lock = threading.Lock()
 _groq_failed = False
 
+def _openai_client_kwargs(api_key: str) -> dict:
+    """Build OpenAI() kwargs, adding a custom-gateway base_url when configured."""
+    kwargs = {"api_key": api_key}
+    if os.getenv("OPENAI_PROVIDER", "").strip().lower() == "custom":
+        base_url = os.getenv("OPENAI_BASE_URL")
+        if base_url:
+            kwargs["base_url"] = base_url
+    return kwargs
+
 def get_openai_client():
     global _openai_client, _openai_failed
     if _openai_failed:
@@ -32,7 +41,7 @@ def get_openai_client():
             from openai import OpenAI
             api_key = os.getenv("OPENAI_API_KEY")
             if api_key:
-                _openai_client = OpenAI(api_key=api_key)
+                _openai_client = OpenAI(**_openai_client_kwargs(api_key))
                 print("[construction_llm_explainer] OpenAI GPT-4o ready (primary)")
             else:
                 print("[construction_llm_explainer] OPENAI_API_KEY not set")

@@ -2,6 +2,13 @@ import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 os.environ["ANONYMIZED_TELEMETRY"] = "False" # Stop ChromaDB POSTHOG errors
 
+# Load the top-level .env before importing routes/services, so import-time
+# clients (e.g. agent_service's ChatOpenAI) see the configured environment.
+# override=False so real environment variables (Docker/compose) take precedence.
+from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=False)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles

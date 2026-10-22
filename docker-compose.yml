@@ -5,9 +5,9 @@ services:
     ports:
       - "8001:8001"
 
-    # API keys from .env file (lives at backend/.env — copy .env.example there)
+    # API keys and OpenAI gateway config from the top-level .env
     env_file:
-      - backend/.env
+      - .env
 
     # Mount local data/ folder (PDFs, terms, dictionary images)
     volumes:

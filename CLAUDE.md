@@ -51,8 +51,10 @@ docker compose logs -f
 
 ## Environment Variables
 
-Copy `.env.example` to `backend/.env`:
-- `OPENAI_API_KEY` — required (GPT-4o text + vision)
+Configuration lives in a single `.env` at the project root:
+- `OPENAI_API_KEY` — required (text + vision)
+- `OPENAI_MODEL` — model name for all OpenAI calls (defaults to `gpt-4o`)
+- `OPENAI_PROVIDER` + `OPENAI_BASE_URL` — optional; set `OPENAI_PROVIDER=custom` to route all OpenAI calls through a custom OpenAI-compatible gateway at `OPENAI_BASE_URL` (passed verbatim, applied only when provider is `custom`)
 - `GOOGLE_CSE_API_KEY` + `GOOGLE_CSE_CX` — required (Google image search)
 - `GROQ_API_KEY` — optional (fallback LLM)
 

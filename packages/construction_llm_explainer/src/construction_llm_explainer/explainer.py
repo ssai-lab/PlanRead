@@ -5,6 +5,7 @@ Core engine for calling LLMs to explain construction terms.
 """
 
 import json
+import os
 from typing import Optional
 
 from construction_llm_explainer.clients import get_openai_client, get_groq_client
@@ -51,12 +52,13 @@ def explain_term(
 
     raw = None
 
-    # Primary: OpenAI GPT-4o
+    # Primary: OpenAI (or a custom OpenAI-compatible gateway)
     openai_client = get_openai_client()
     if openai_client:
         try:
+            openai_model = os.getenv("OPENAI_MODEL", "gpt-4o")
             completion = openai_client.chat.completions.create(
-                model="gpt-4o",
+                model=openai_model,
                 temperature=0.2,
                 max_tokens=350,
                 messages=[
@@ -65,7 +67,7 @@ def explain_term(
                 ],
             )
             raw = completion.choices[0].message.content.strip()
-            print("[construction_llm_explainer] Used GPT-4o (structured)")
+            print(f"[construction_llm_explainer] Used {openai_model} (structured)")
         except Exception as e:
             print(f"[construction_llm_explainer] GPT-4o failed: {e}, falling back to Groq")
 
