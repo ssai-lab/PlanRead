@@ -42,6 +42,9 @@ backend/chroma_db/
 !/data/RSMeans_Illustrated_Construction_Dictionary/
 /data/RSMeans_Illustrated_Construction_Dictionary/*
 !/data/RSMeans_Illustrated_Construction_Dictionary/terms.json
+# Sample retrieval corpus: project-authored text so the RAG vector tier has
+# something to ingest on a fresh clone (see samples/README.md).
+!/data/PlanRead-Sample-Glossary.pdf
 !samples/
 !samples/*.pdf
 

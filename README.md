@@ -143,6 +143,13 @@ ships with the repo at `data/RSMeans_Illustrated_Construction_Dictionary/terms.j
 so the retrieval-augmented explanation path works immediately after a fresh clone.
 The sample contains only definitions written for this project.
 
+A project-authored sample glossary, `data/PlanRead-Sample-Glossary.pdf`, also ships
+so the vector-search tier has a corpus to ingest on first use. It is a three-page
+document written for this project (MIT licensed), not the RSMeans dictionary: it
+gives the RAG pipeline real text to chunk and embed, so retrieval can be exercised
+without the licensed source. Delete it once you install the full dictionary if you
+prefer to index only that.
+
 **To use the full dictionary instead:**
 
 1. Create a `data/` folder in the project root if it does not already exist

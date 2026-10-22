@@ -19,6 +19,26 @@ To use the full dictionary instead, replace this file with the real `terms.json`
 `images/` directory alongside it. Both paths are gitignored, so your replacement
 will not be committed.
 
+## Sample retrieval corpus
+
+    data/PlanRead-Sample-Glossary.pdf
+
+A three-page glossary written for this project (about 1,500 words), covering sheet
+organisation, line and annotation conventions, and prose definitions of the same
+24 terms as the sample dictionary. It exists because the RAG pipeline has two
+tiers: exact lookup against `terms.json`, and a vector-search fallback built by
+`PyPDFDirectoryLoader` over the PDFs in `data/`. Without a PDF in `data/` the
+fallback ingests nothing and quietly returns no context, so explanations lose
+their dictionary grounding for any term outside the 24. This file gives that tier
+something to chew on straight after a clone.
+
+It is also the reason the negation rules in `.gitignore` exist: `data/` and
+`*.pdf` are ignored wholesale, so this one file is excepted explicitly.
+
+Regenerate it with:
+
+    python3 samples/make_sample_glossary.py
+
 ## Sample plan set
 
     samples/plan-set/A-0-cover.jpg
