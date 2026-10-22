@@ -114,16 +114,20 @@ def run_paddle_ocr(img_bgr: np.ndarray) -> list[tuple]:
                     results.append((pts, str(text).strip(), float(conf)))
                 continue
 
-            # Handle PaddleOCR 3.x API output (PaddleX objects/dicts)
+            # Handle PaddleOCR 3.x API output (PaddleX OCRResult: dict-like)
             try:
                 if hasattr(page, "rec_texts"):
-                    quads  = page.dt_polys
                     texts  = page.rec_texts
                     scores = page.rec_scores
+                    quads  = getattr(page, "rec_polys", None)
+                    if quads is None or len(quads) != len(texts):
+                        quads = page.dt_polys
                 else:
-                    quads  = page["dt_polys"]
                     texts  = page["rec_texts"]
                     scores = page["rec_scores"]
+                    quads  = page.get("rec_polys")
+                    if quads is None or len(quads) != len(texts):
+                        quads = page["dt_polys"]
 
                 for quad, text, conf in zip(quads, texts, scores):
                     conf = float(conf)
