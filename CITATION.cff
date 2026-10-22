@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "PlanRead"
 abstract: "PlanRead is a web application for construction plan reading education. It supports teaching and learning how to read and interpret construction documents through an interactive, browser-based interface."
-version: "0.1.0"
+version: "0.1.1"
 type: software
 license: MIT
 repository-code: "https://github.com/ssai-lab/PlanRead"
