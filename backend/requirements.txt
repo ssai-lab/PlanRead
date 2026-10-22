@@ -1,17 +1,56 @@
-fastapi==0.111.1
-uvicorn==0.38.0
-pydantic==2.7.1
-numpy<2.0.0
-opencv-python==4.8.1.78
-python-dotenv==1.0.1
-groq
-openai>=1.30.0
-httpx
-requests
+# Backend Python dependencies (direct only).
+#
+# This is a curated list of the backend's direct dependencies, not a `pip
+# freeze`. Transitive dependencies are deliberately left unpinned so pip can
+# resolve versions compatible with the running Python (the Docker image uses
+# Python 3.10). Versions below match the stack the app has been tested with.
+#
+# The 5 local packages in packages/ are installed separately:
+#   pip install -e packages/construction_ocr  (and the other four)
+# See CLAUDE.md / Readme.md.
+#
+# The PaddlePaddle engine is NOT listed here because paddlepaddle-gpu is not on
+# PyPI. The Dockerfile installs it separately (from Paddle's mirror), and local
+# users should install `paddlepaddle` or `paddlepaddle-gpu` for their platform.
 
+# ── Web / API ────────────────────────────────────────────────
+fastapi==0.111.1
+uvicorn[standard]==0.38.0
+pydantic==2.7.1
+python-multipart==0.0.29
+python-dotenv==1.0.1
+httpx==0.28.1
+requests==2.34.2
+cachetools==7.1.4
+
+# ── LLM / agent stack ────────────────────────────────────────
+openai==1.109.1
+groq==1.2.0
 langchain==0.1.12
 langchain-community==0.0.29
-langchain-huggingface
+langchain-core==0.1.53
+langchain-openai==0.1.1
+langgraph==0.0.51
+
+# ── RAG / vector search ──────────────────────────────────────
+sentence-transformers==2.7.0
+torch==2.12.0
 chromadb==0.4.24
 pypdf==4.2.0
-sentence-transformers==2.7.0
+
+# ── OCR / vision ─────────────────────────────────────────────
+numpy==1.26.4
+# paddlex[ocr-core] (pulled in by paddleocr) already requires
+# opencv-contrib-python, and installing opencv-python alongside it ships a
+# second, duplicate copy of cv2 (~90 MB). contrib is a superset of the base
+# package, so pin it here and do not list opencv-python.
+opencv-contrib-python>=4.8,<4.12
+pillow==12.2.0
+paddleocr==3.5.0
+paddlex==3.5.2
+# Three paddlepaddle runtime deps listed explicitly because the Dockerfile
+# installs the paddlepaddle-gpu wheel with --no-deps (its nvidia-*-cu11 deps
+# duplicate the CUDA/cuDNN libraries already in the nvidia/cuda base image).
+astor==0.8.1
+decorator==5.3.1
+opt-einsum==3.3.0

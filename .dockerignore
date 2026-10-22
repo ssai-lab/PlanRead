@@ -5,16 +5,35 @@
 
 # Python
 .venv/
-__pycache__
-*.pyc
-*.egg-info
+venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
 
 # Node
 app/node_modules/
 app/dist/
+**/node_modules/
 
-# Data (mounted as volume)
+# Secrets (docker-compose injects these at runtime via env_file)
+.env
+backend/.env
+
+# Data (mounted as a volume; also large)
 data/
+
+# Runtime artifacts (recreated at runtime)
+sessions.db
+backend/sessions.db
+backend/activity_log.csv
+backend/vlm_log.csv
+backend/chroma_db/
+*.log
 
 # IDE / OS
 .vscode/
@@ -24,17 +43,25 @@ data/
 Thumbs.db
 .DS_Store
 
-# Docs / Images (not needed in container)
+# Docs / Images (not needed in the container)
 docs/
 Images/
+*.md
+project_setup_guide.html
+LICENSE
+launcher.py
 
-# SQLite DB (recreated at runtime)
-sessions.db
-backend/activity_log.csv
-backend/vlm_log.csv
-backend/chroma_db/
+# Test / notebook / cache artifacts (never needed at runtime)
+**/tests/
+**/test_*.py
+**/*_test.py
+**/*.ipynb
+**/.pytest_cache/
+**/.ruff_cache/
+**/.mypy_cache/
+**/.eggs/
 
-# Docker
+# Docker build files
 Dockerfile
 docker-compose.yml
 .dockerignore

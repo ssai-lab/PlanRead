@@ -1,7 +1,7 @@
 """
 launcher.py
 
-Standalone launcher for the PlanRead project.
+Standalone launcher for the Gen_ai-for-stem-education project.
 
 
 Run directly from the project root:
@@ -120,9 +120,18 @@ def _start_backend_in_thread():
 
             project_root = os.path.abspath(os.path.dirname(__file__))
             backend_dir = os.path.join(project_root, "backend")
+            packages_dir = os.path.join(project_root, "packages")
 
-            if backend_dir not in sys.path:
-                sys.path.insert(0, backend_dir)
+            path_entries = [backend_dir]
+            if os.path.isdir(packages_dir):
+                for package_name in os.listdir(packages_dir):
+                    package_src_dir = os.path.join(packages_dir, package_name, "src")
+                    if os.path.isdir(package_src_dir):
+                        path_entries.append(package_src_dir)
+
+            for path_entry in reversed(path_entries):
+                if path_entry not in sys.path:
+                    sys.path.insert(0, path_entry)
 
             # Import the FastAPI app
             import app as backend_app  # type: ignore
@@ -168,7 +177,7 @@ class StatusWindow(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.title("PlanRead - Launcher")
+        self.title("Gen AI for STEM - Launcher")
         self.resizable(False, False)
 
         # Small, centered window.
