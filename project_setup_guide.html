@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlanRead — Project Setup Guide</title>
+<title>Gen AI for STEM Education — Project Setup Guide</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -56,7 +56,7 @@
 <body>
 <div class="container">
 
-<h1>PlanRead</h1>
+<h1>Gen AI for STEM Education</h1>
 <p class="subtitle">Full Project Analysis &amp; New Device Setup Guide &bull; Generated April 2026</p>
 
 <div class="toc">
@@ -243,7 +243,10 @@ construction_vlm_analyzer     ← standalone (OpenAI, Pillow)</code></pre>
 <h2 id="keys">6. Required API Keys</h2>
 <table>
   <tr><th>Key</th><th>Provider</th><th>Purpose</th><th>Required?</th></tr>
-  <tr><td><code>OPENAI_API_KEY</code></td><td><a href="https://platform.openai.com">OpenAI</a></td><td>GPT-4o text + Vision</td><td><span class="badge badge-yes">Yes</span></td></tr>
+  <tr><td><code>OPENAI_API_KEY</code></td><td><a href="https://platform.openai.com">OpenAI</a></td><td>Text + Vision</td><td><span class="badge badge-yes">Yes</span></td></tr>
+  <tr><td><code>OPENAI_MODEL</code></td><td>OpenAI / custom gateway</td><td>Model for text, Vision, and agent calls (default <code>gpt-4o</code>)</td><td><span class="badge badge-opt">Optional</span></td></tr>
+  <tr><td><code>OPENAI_PROVIDER</code></td><td>Custom gateway</td><td>Set to <code>custom</code> to route OpenAI calls through <code>OPENAI_BASE_URL</code></td><td><span class="badge badge-opt">Optional</span></td></tr>
+  <tr><td><code>OPENAI_BASE_URL</code></td><td>Custom gateway</td><td>Base URL of an OpenAI-compatible gateway (used only when provider is custom)</td><td><span class="badge badge-opt">Optional</span></td></tr>
   <tr><td><code>GOOGLE_CSE_API_KEY</code></td><td><a href="https://console.cloud.google.com">Google Cloud</a></td><td>Image search</td><td><span class="badge badge-yes">Yes</span></td></tr>
   <tr><td><code>GOOGLE_CSE_CX</code></td><td>Google Programmable Search</td><td>Search engine ID</td><td><span class="badge badge-yes">Yes</span></td></tr>
   <tr><td><code>GROQ_API_KEY</code></td><td><a href="https://groq.com">Groq</a></td><td>LLM fallback (Llama)</td><td><span class="badge badge-opt">Optional</span></td></tr>
@@ -283,13 +286,12 @@ pip install --upgrade pip</code></pre>
 <h4><span class="step-num">3</span> Install Python dependencies</h4>
 <pre><code>pip install -r backend/requirements.txt</code></pre>
 
-<h4><span class="step-num">4</span> Install PaddleOCR</h4>
+<h4><span class="step-num">4</span> Install PaddlePaddle</h4>
 <p><strong style="color:#e6edf3">With NVIDIA GPU (CUDA 11.8):</strong></p>
-<pre><code>pip install paddlepaddle-gpu==2.6.1.post118 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
-pip install "paddleocr>=2.7.0"</code></pre>
+<pre><code>pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/</code></pre>
 <p><strong style="color:#e6edf3">CPU only (Windows / Mac / no GPU):</strong></p>
-<pre><code>pip install paddlepaddle==2.6.1
-pip install "paddleocr>=2.7.0"</code></pre>
+<pre><code>pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/</code></pre>
+<p>PaddleOCR 3.5 and PaddleX 3.5 are pinned in <code>backend/requirements.txt</code> and installed in step 3.</p>
 <div class="alert alert-info"><strong>ℹ️ Note</strong>First PaddleOCR import downloads ~100 MB of models. One-time cost.</div>
 
 <h4><span class="step-num">5</span> Install the 5 local packages (order matters!)</h4>
@@ -307,7 +309,7 @@ cd ..</code></pre>
 <p>This creates <code>app/dist/</code> which the backend serves as static files.</p>
 
 <h4><span class="step-num">7</span> Obtain the <code>data/</code> folder</h4>
-<p>The <code>data/</code> folder is <strong style="color:#ff7b72">not in the repo</strong>. Copy from an existing setup:</p>
+<p>The full <code>data/</code> corpus is <strong style="color:#ff7b72">not in the repo</strong>; only the sample glossary and sample term dictionary (<code>data/PlanRead-Sample-Glossary.pdf</code>, <code>data/RSMeans_Illustrated_Construction_Dictionary/terms.json</code>) and the sample plan set in <code>samples/</code> are tracked. With just those, the RAG service indexes the sample corpus on first run. To use the complete dictionary, copy it from an existing setup:</p>
 <pre><code>data/
 ├── Construction-Vocabulary.pdf          (~500 KB)
 ├── RSMeans Illustrated Construction Dictionary.pdf  (~8 MB)
@@ -320,16 +322,17 @@ tar -czf data.tar.gz data/
 # On new machine (in project root):
 tar -xzf data.tar.gz</code></pre></div>
 
-<h4><span class="step-num">8</span> Create <code>.env</code> files</h4>
-<p>Create <strong style="color:#e6edf3">two</strong> .env files (launcher checks both):</p>
-<pre><code># Root .env
-cp .env.example .env
-
-# backend/.env — fill in your keys:
-OPENAI_API_KEY=sk-your-key-here
+<h4><span class="step-num">8</span> Create <code>.env</code></h4>
+<p>Create a single <code>.env</code> in the <strong style="color:#e6edf3">project root</strong>:</p>
+<pre><code>OPENAI_API_KEY=sk-your-key-here
+OPENAI_MODEL=gpt-4o
 GOOGLE_CSE_API_KEY=your-key-here
 GOOGLE_CSE_CX=your-cx-here
-GROQ_API_KEY=your-groq-key-here</code></pre>
+GROQ_API_KEY=your-groq-key-here
+
+# Optional: route all OpenAI calls through a custom gateway
+# OPENAI_PROVIDER=custom
+# OPENAI_BASE_URL=https://your-gateway.example.com/v1</code></pre>
 
 <h4><span class="step-num">9</span> Run the app</h4>
 <pre><code>python launcher.py</code></pre>
@@ -405,7 +408,7 @@ docker compose up</code></pre>
   <tr><td><code>ModuleNotFoundError: construction_ocr</code></td><td>Forgot to <code>pip install -e packages/construction_ocr</code>. Install all 5 local packages.</td></tr>
   <tr><td>No text detected on first run</td><td>PaddleOCR downloads models on first import (~100 MB). Wait for it.</td></tr>
   <tr><td>ChromaDB takes forever</td><td>Normal — chunking and embedding PDFs (~7500 chunks). Takes 3-10 min.</td></tr>
-  <tr><td><code>OPENAI_API_KEY not set</code></td><td><code>.env</code> must exist in <code>backend/</code> and/or project root. Check both paths.</td></tr>
+  <tr><td><code>OPENAI_API_KEY not set</code></td><td>Create a <code>.env</code> in the project root (see step 8).</td></tr>
   <tr><td><code>npm ci</code> fails</td><td>Delete <code>app/node_modules/</code> and try <code>npm install</code> instead.</td></tr>
   <tr><td>OpenCV errors on Mac</td><td>Run <code>brew install opencv</code> first.</td></tr>
   <tr><td>Port 8001 in use</td><td>Change port in <code>docker-compose.yml</code> or pass <code>--port XXXX</code> to uvicorn.</td></tr>
@@ -413,7 +416,7 @@ docker compose up</code></pre>
 </table>
 
 <hr>
-<p style="text-align:center;color:#484f58;font-size:13px;margin-top:40px">Generated by project analysis • PlanRead • April 2026</p>
+<p style="text-align:center;color:#484f58;font-size:13px;margin-top:40px">Generated by project analysis • Gen AI for STEM Education • April 2026</p>
 
 </div>
 <script>mermaid.initialize({theme:'dark',themeVariables:{primaryColor:'#1f6feb',primaryTextColor:'#e6edf3',lineColor:'#58a6ff',secondaryColor:'#30164d',tertiaryColor:'#161b22'}});</script>
