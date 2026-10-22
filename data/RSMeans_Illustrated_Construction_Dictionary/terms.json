@@ -1,0 +1,98 @@
+[
+  {
+    "term": "LINTEL",
+    "definition": "A horizontal structural member that spans an opening such as a door or window and carries the load of the construction above it. On a drawing it is usually shown as a heavy line across the opening, often with a note giving its material and size."
+  },
+  {
+    "term": "SILL",
+    "definition": "The horizontal bottom member of a window or door opening, or the lowest horizontal member of a framed wall. A window sill forms the base the window sits on and is often shown with a dimension to finished floor height."
+  },
+  {
+    "term": "HEADER",
+    "definition": "A horizontal framing member placed across the top of an opening to transfer load to the adjacent framing. Also used for the top member of a window or door frame, and for a masonry unit laid across a wall to bond its two faces."
+  },
+  {
+    "term": "FOOTING",
+    "definition": "The widened, lowest part of a foundation that distributes the building load over a larger soil area. Shown on foundation plans as a dashed or solid outline with a size callout such as 24 in. by 12 in."
+  },
+  {
+    "term": "JAMB",
+    "definition": "The vertical side member of a door or window frame. Jambs appear on enlarged plans and elevations as the vertical lines bounding the opening."
+  },
+  {
+    "term": "SOFFIT",
+    "definition": "The underside of a building element, such as the underside of a beam, an eave overhang, or the exposed surface above a cabinet or ceiling change. Often dimensioned on reflected ceiling plans."
+  },
+  {
+    "term": "RISER",
+    "definition": "The vertical face between two stair treads, meaning the height a stair climbs in one step. Riser height is normally dimensioned on stair plans and checked against code limits."
+  },
+  {
+    "term": "TREAD",
+    "definition": "The horizontal surface of a stair step that a person walks on, measured from the front of one riser to the front of the next."
+  },
+  {
+    "term": "REBAR",
+    "definition": "Reinforcing bar: steel bars embedded in concrete to resist tension. On structural drawings, bar size, spacing, and cover are given in a reinforcement schedule, commonly abbreviated as #4 at 12 in. on center."
+  },
+  {
+    "term": "FLASHING",
+    "definition": "A thin, water-resistant material installed to direct water away from joints and penetrations, such as at roof edges, parapets, and window heads. Drawn as a thin line with an identifying leader on roof and wall sections."
+  },
+  {
+    "term": "EAVE",
+    "definition": "The lower edge of a sloping roof that overhangs the wall below it. The eave line appears on elevations and roof plans as the outermost horizontal line at the roof edge."
+  },
+  {
+    "term": "RIDGE",
+    "definition": "The highest horizontal line formed where two opposing roof slopes meet. Shown on a roof plan as a heavy line running along the top of the roof."
+  },
+  {
+    "term": "STUD",
+    "definition": "A vertical framing member in a wall, typically wood or light-gauge steel, spaced at a regular interval such as 16 in. on center. Studs are shown on framing plans as short perpendicular ticks along the wall line."
+  },
+  {
+    "term": "JOIST",
+    "definition": "A horizontal framing member that supports a floor or ceiling and transfers load to beams or bearing walls. Joist direction, size, and spacing are noted on framing plans."
+  },
+  {
+    "term": "SHEATHING",
+    "definition": "The panel material fastened over framing to form a solid surface, such as plywood or oriented strand board on walls and roofs. Also called sheathing board or structural sheathing when it carries load."
+  },
+  {
+    "term": "GRADE BEAM",
+    "definition": "A reinforced concrete beam cast at or below ground level that carries wall or column loads to isolated footings, often spanning between piers. Shown on foundation plans as a dashed line with a size callout."
+  },
+  {
+    "term": "CONTROL JOINT",
+    "definition": "A deliberate plane of weakness formed in a concrete slab or wall so that cracking occurs in a controlled location rather than randomly. Shown on slab plans as a single line with a note giving spacing."
+  },
+  {
+    "term": "WEEP HOLE",
+    "definition": "A small opening left at the base of a masonry wall or above flashing to let trapped water drain out. Usually shown on wall sections as a short gap in the mortar joint at the base of the cavity."
+  },
+  {
+    "term": "SPECIFICATION",
+    "definition": "The written portion of the contract documents, usually abbreviated as spec, that describes materials, workmanship, and quality requirements. On drawings, a note such as see spec section 03 30 00 refers the reader to it."
+  },
+  {
+    "term": "SCHEDULE",
+    "definition": "A tabular list on a drawing that gives the size, type, and quantity of repeated items such as doors, windows, finishes, or equipment. Schedules are keyed to the plan by a matching mark or tag."
+  },
+  {
+    "term": "LEGEND",
+    "definition": "A key on a drawing sheet that explains the symbols, line types, and abbreviations used on that sheet or throughout the set."
+  },
+  {
+    "term": "DETAIL CALLOUT",
+    "definition": "A circular or oval symbol placed on a plan or section that references a separate enlarged drawing. The number above the line is the detail number and the number below is the sheet where that detail is drawn."
+  },
+  {
+    "term": "SECTION MARK",
+    "definition": "A symbol showing where a cutting plane passes through the building, with arrows indicating the viewing direction. The letters or numbers identify the sheet and section drawing that results."
+  },
+  {
+    "term": "PLAN VIEW",
+    "definition": "A drawing that shows a building or portion of it as seen from above, cut horizontally at a stated height, so that walls, openings, and fixtures appear in their true horizontal relationship."
+  }
+]

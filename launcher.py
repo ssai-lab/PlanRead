@@ -1,7 +1,7 @@
 """
 launcher.py
 
-Standalone launcher for the Gen_ai-for-stem-education project.
+Standalone launcher for the PlanRead project.
 
 
 Run directly from the project root:
@@ -168,7 +168,7 @@ class StatusWindow(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.title("Gen AI for STEM - Launcher")
+        self.title("PlanRead - Launcher")
         self.resizable(False, False)
 
         # Small, centered window.

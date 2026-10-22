@@ -1,20 +1,20 @@
-# Gen AI for STEM Education
+# PlanRead
 
-An AI-powered tool that helps students learn from construction plan drawings. Upload a construction drawing, and the app will detect text, identify symbols, and explain what everything means using OpenAI's GPT-4o — all in a simple web interface.
+PlanRead is a web application that helps students read and understand construction plan drawings. Users upload a drawing, and the app detects text and symbols, then explains construction terms using retrieval-augmented LLM responses. An optional Vision module uses GPT-4o to analyze selected drawing regions.
 
-## What It Does
+## Features
 
-1. **OCR Text Detection** — Uses PaddleOCR to find and read text labels on construction drawings
-2. **Circle/Symbol Detection** — Identifies circled callouts and reference symbols using OpenCV
-3. **AI Explanations** — Sends detected text to GPT-4o, which explains each term like a senior construction engineer would
-4. **RAG Dictionary Lookup** — Matches terms against the RSMeans Illustrated Construction Dictionary for accurate definitions and images
-5. **Visual Analysis (VLM)** — Uses GPT-4o Vision to analyze full drawings or selected regions and describe what's shown
-6. **Activity Logging** — Tracks user interactions for research purposes
+- **OCR Text Detection** — Finds and reads text labels using PaddleOCR
+- **Circle/Symbol Detection** — Identifies circled callouts and reference symbols using OpenCV
+- **AI Explanations** — Sends detected text to GPT-4o for plain-language explanations
+- **RAG Dictionary Lookup** — Matches terms against the RSMeans Illustrated Construction Dictionary for definitions and images
+- **Visual Analysis (Vision, optional)** — Uses GPT-4o Vision to analyze full or partial drawings
+- **Activity Logging** — Records user interactions for research/troubleshooting
 
 ## Project Structure
 
 ```
-Gen_ai-for-stem-education/
+PlanRead/
 ├── launcher.py                  # Main entry point — starts backend + opens browser
 ├── backend/                     # Python FastAPI server
 │   ├── app.py                   # FastAPI app setup, routes, static file serving
@@ -28,7 +28,7 @@ Gen_ai-for-stem-education/
 │   │   ├── regions_detect.py    # Region-specific detection
 │   │   └── activity_log.py      # Activity logging endpoint
 │   └── services/
-│       ├── rag_service.py       # RAG dictionary lookup (uses construction_plan_rag)
+│       ├── rag_service.py       # RAG dictionary lookup
 │       └── google_images.py     # Google image search service
 ├── app/                         # React + Vite frontend
 │   ├── package.json
@@ -52,23 +52,25 @@ Gen_ai-for-stem-education/
 │       └── utils/
 │           └── activityLogger.js
 ├── packages/                    # Reusable Python packages
-│   ├── construction_ocr/        # PaddleOCR text detection pipeline
-│   ├── construction_circle_detector/  # OpenCV circle detection
-│   ├── construction_llm_explainer/    # GPT-4o LLM explanation logic
-│   ├── construction_plan_rag/         # RAG + dictionary term lookup
-│   └── construction_vlm_analyzer/     # GPT-4o Vision analysis
+│   ├── construction_ocr/                  # PaddleOCR text detection pipeline
+│   ├── construction_circle_detector/      # OpenCV circle detection
+│   ├── construction_llm_explainer/        # LLM explanation logic
+│   ├── construction_plan_rag/             # RAG + dictionary term lookup
+│   └── construction_vlm_analyzer/         # GPT-4o Vision analysis
 ├── data/                        # Reference data (not in repo, see below)
 │   ├── Construction-Vocabulary.pdf
 │   ├── RSMeans Illustrated Construction Dictionary.pdf
 │   └── RSMeans_Illustrated_Construction_Dictionary/
 │       ├── terms.json           # Extracted dictionary terms
 │       └── images/              # Extracted page images
-└── docs/                        # Local documentation (not in repo)
-    ├── system-diagram.mmd       # Mermaid architecture diagram
-    └── system_prompts.txt       # LLM system prompts reference
+├── docs/                        # Local documentation (not in repo)
+├── samples/                     # Bundled 4-sheet sample plan set (see samples/README.md)
+├── CONTRIBUTORS.md              # Non-author contributor credits
+├── DOCKER_SETUP.md              # Docker deployment/setup guide
+└── LICENSE                      # Project license (MIT)
 ```
 
-> **Note:** The `data/` and `docs/` folders are not included in the GitHub repo. See the [Data Setup](#4-data-setup) section below for how to set them up.
+> **Note:** The `data/` and `docs/` folders are not included in the GitHub repo, except for the small sample term dictionary described below. See the Data Setup section for details.
 
 ## Prerequisites
 
@@ -83,8 +85,8 @@ Make sure you have these installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/Gen_ai-for-stem-education.git
-cd Gen_ai-for-stem-education
+git clone https://github.com/ssai-lab/PlanRead.git
+cd PlanRead
 ```
 
 ### 2. Set Up the Python Backend
@@ -107,8 +109,7 @@ pip install --upgrade pip
 pip install -r backend/requirements.txt
 ```
 
-The backend also depends on the local packages in `packages/`. Install them in editable mode:
-
+Install the local packages in editable mode:
 ```bash
 pip install -e packages/construction_ocr
 pip install -e packages/construction_circle_detector
@@ -134,21 +135,35 @@ This creates a `dist/` folder inside `app/` that the backend serves automaticall
 
 ### 4. Data Setup
 
-The `data/` folder is not included in the repo because the files are large. To set it up:
+The full `data/` folder is not included in the repo: the files are large and the
+dictionary is licensed third-party material.
 
-1. Create a `data/` folder in the project root
+**Works out of the box.** A small sample dictionary of 24 common plan-reading terms
+ships with the repo at `data/RSMeans_Illustrated_Construction_Dictionary/terms.json`,
+so the retrieval-augmented explanation path works immediately after a fresh clone.
+The sample contains only definitions written for this project.
+
+**To use the full dictionary instead:**
+
+1. Create a `data/` folder in the project root if it does not already exist
 2. Place the following files in it:
    - `Construction-Vocabulary.pdf`
    - `RSMeans Illustrated Construction Dictionary.pdf`
-3. Create `data/RSMeans_Illustrated_Construction_Dictionary/` and add:
-   - `terms.json` — Extracted dictionary terms (JSON)
+3. Replace `data/RSMeans_Illustrated_Construction_Dictionary/terms.json` with the full
+   term list and add:
    - `images/` — Extracted page images organized by page number
 
-> Ask a team member for these files or generate them from the source PDFs.
+> Ask a team member for these files or generate them from the source PDFs. Both
+> `terms.json` and `images/` are gitignored, so replacing the sample will not affect
+> the repository.
+
+A four-sheet sample plan set ships in `samples/plan-set/` for the upload and
+detection paths — see `samples/README.md` for the sheet list and the note on its
+third-party licence.
 
 ### 5. API Keys
 
-Create a `.env` file in the `backend/` folder with your API keys:
+Create a `.env` file in the **project root** (recommended) with your API keys:
 
 ```ini
 OPENAI_API_KEY=your_openai_api_key_here
@@ -156,16 +171,19 @@ GOOGLE_CSE_API_KEY=your_google_custom_search_api_key_here
 GOOGLE_CSE_CX=your_google_custom_search_engine_id_here
 ```
 
+- The recommended place for `.env` is the project root.
+- The launcher will also check `backend/.env` if not found in the root, so both work (root takes precedence).
+- Supported key names (do not change):
+  - `OPENAI_API_KEY`
+  - `GOOGLE_CSE_API_KEY`
+  - `GOOGLE_CSE_CX`
+  - `GROQ_API_KEY` (optional fallback)
+
 You'll need:
 - An **OpenAI API key** from [platform.openai.com](https://platform.openai.com) — used for GPT-4o text explanations and Vision analysis
 - A **Google Custom Search API key + Search Engine ID** from [Google Cloud Console](https://console.cloud.google.com) — used for image search
 
-Optionally, you can also add a Groq key as a fallback for text explanations:
-```ini
-GROQ_API_KEY=your_groq_api_key_here
-```
-
-> Do **not** commit the `.env` file to Git.
+Do **not** commit any `.env` file to Git.
 
 ## Running the App
 
@@ -183,7 +201,7 @@ python3 launcher.py
 
 The launcher will:
 1. Check that all dependencies and API keys are set up
-2. Start the backend server at `http://127.0.0.1:8001`
+2. Start the backend server at `http://[IP_ADDRESS]:8001`
 3. Open the app in your default browser
 
 ## How It Works
@@ -195,7 +213,7 @@ When you upload a construction drawing:
 3. **OpenCV** finds circled callout symbols
 4. Detected items are shown as clickable overlays on the image
 5. Clicking a text label sends it to **GPT-4o**, which explains the term using construction domain knowledge
-6. The **RAG service** searches the RSMeans construction dictionary for matching terms and images
+6. The **RAG service** searches the construction dictionary for matching terms and images
 7. You can also select a region and run **GPT-4o Vision analysis** for a detailed breakdown of that area
 
 ## Troubleshooting
@@ -204,6 +222,6 @@ When you upload a construction drawing:
 |---|---|
 | "No text detected" | Make sure PaddleOCR is installed properly. First run may be slow (downloading models). |
 | "Module not found" | Activate your virtual environment first. Make sure packages are installed with `pip install -e`. |
-| "Missing API keys" | Check your `backend/.env` file has all three keys. |
+| "Missing API keys" | Check your `.env` file exists in the project root (preferred) or `backend/`, and has all required keys. |
 | OpenCV errors on Mac | Run `brew install opencv`. |
 | Slow on M1/M2/M3 Mac | PaddleOCR uses CPU mode by default. This is normal. |

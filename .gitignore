@@ -33,8 +33,17 @@ backend/chroma_db/
 # ──────────────────────────────────────────────
 # Data files (kept locally, not on GitHub)
 # ──────────────────────────────────────────────
-data/
+/data/*
 *.pdf
+
+# Committed exceptions: a small sample term dictionary and a four-sheet sample
+# plan set ship with the repo so the app runs out of the box. The full
+# third-party dictionary and any drawing from a real project stay ignored.
+!/data/RSMeans_Illustrated_Construction_Dictionary/
+/data/RSMeans_Illustrated_Construction_Dictionary/*
+!/data/RSMeans_Illustrated_Construction_Dictionary/terms.json
+!samples/
+!samples/*.pdf
 
 # ──────────────────────────────────────────────
 # Test / Sample Images (kept locally)

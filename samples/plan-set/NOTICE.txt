@@ -1,0 +1,31 @@
+THIRD-PARTY CONTENT NOTICE — samples/plan-set/
+==============================================
+
+The four image files in this directory are NOT licensed under the MIT license
+that covers the PlanRead source code. They remain the property of their author.
+
+  Files:    A-0-cover.jpg
+            A-1-foundation-and-floor-plans.jpg
+            A-2-elevations-and-details.jpg
+            A-3-sections-and-details.jpg
+
+  Work:     "The Manchester" sample plan set
+  Author:   G.M. Frech and Associates (GMF+ Architects)
+  Source:   https://gmfplus.com/stock-plans/sample-plan-set/
+  Notice:   Copyright (c) 2012 G.M. Frech and Associates. All Rights Reserved.
+
+They are redistributed here unmodified, with the vendor's sample watermark
+intact, for one purpose only: as bundled test input so that a fresh clone of
+PlanRead can exercise the drawing upload, OCR, callout-detection and
+detail-navigation paths without the user having to supply a drawing.
+
+No license to copy, modify, or redistribute these images for any other purpose
+is granted by PlanRead or by its authors. Reuse of the images for anything other
+than testing this software requires permission from the copyright holder.
+
+The PlanRead MIT license (see /LICENSE) applies to the source code only and does
+not extend to the contents of this directory.
+
+Removal request: if you hold the rights to this material and want it removed,
+contact the corresponding author (nkim@tamu.edu) and the files will be deleted
+from the repository and from any archived release.

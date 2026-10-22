@@ -1,4 +1,4 @@
-# Docker Setup Guide — Gen AI for STEM Education
+# Docker Setup Guide — PlanRead
 
 ## Prerequisites
 
@@ -13,8 +13,8 @@
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/anidude09/Gen_ai-for-stem-education.git
-cd Gen_ai-for-stem-education
+git clone https://github.com/ssai-lab/PlanRead.git
+cd PlanRead
 ```
 
 ### 2. Add the `data/` folder

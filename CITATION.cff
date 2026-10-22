@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "PlanRead"
+abstract: "PlanRead is a web application for construction plan reading education. It supports teaching and learning how to read and interpret construction documents through an interactive, browser-based interface."
+version: "0.1.0"
+type: software
+license: MIT
+repository-code: "https://github.com/ssai-lab/PlanRead"
+authors:
+  - family-names: Adiga
+    given-names: Aniruddh
+  - family-names: Lee
+    given-names: Noah
+  - family-names: Pi
+    given-names: Yalong
+  - family-names: Choi
+    given-names: Kunhee
+  - family-names: Chai
+    given-names: Dae Seok
+  - family-names: Jung
+    given-names: Wooyoung
+  - family-names: Duffield
+    given-names: Nick
+  - family-names: Kim
+    given-names: Namgyun
